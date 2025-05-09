@@ -1,5 +1,6 @@
 plugins {
     java
+    id("application")
     id("org.springframework.boot") version "3.4.1"
     id("io.spring.dependency-management") version "1.1.7"
 }
@@ -18,4 +19,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.postgresql:postgresql")
+}
+
+application {
+    mainClass.set("com.example.heroku.HerokuApplication")
 }
