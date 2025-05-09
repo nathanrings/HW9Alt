@@ -42,11 +42,9 @@ public class HerokuApplication {
   @Value("${spring.datasource.url}")
   private String dbUrl;
 
-  private final DataSource dataSource;
+  @Autowired
+  private DataSource dataSource;
 
-  public HerokuApplication(DataSource dataSource) {
-      this.dataSource = dataSource;
-  }
   
 
   public static void main(String[] args) throws Exception {
@@ -92,15 +90,5 @@ public class HerokuApplication {
     return sb.toString();
 }
 
-  @Bean
-  public DataSource dataSource() throws SQLException {
-    if (dbUrl == null || dbUrl.isEmpty()) {
-      return new HikariDataSource();
-    } else {
-      HikariConfig config = new HikariConfig();
-      config.setJdbcUrl(dbUrl);
-      return new HikariDataSource(config);
-    }
-  }
 
 }
