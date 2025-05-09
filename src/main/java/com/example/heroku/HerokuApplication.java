@@ -65,7 +65,7 @@ public class HerokuApplication {
 
       ArrayList<String> output = new ArrayList<String>();
       while (rs.next()) {
-        output.add("Timestamp: " + rs.getTimestamp("tick") + " | Random: " + rs.getString("random_string"));
+        output.add("Timestamp: " + rs.getTimestamp("tick") + rs.getString("random_string"));
 
       }
 
