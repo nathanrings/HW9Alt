@@ -25,6 +25,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -80,6 +82,28 @@ public class HerokuApplication {
       return "error";
     }
   }
+
+  @RequestMapping("/dbinput")
+public String dbInputForm() {
+    return "dbinput";
+}
+
+@RequestMapping(value = "/dbinput", method = RequestMethod.POST)
+public String dbInputSubmit(@RequestParam("userInput") String userInput, Map<String, Object> model) {
+  System.out.println("Received user input: " + userInput);
+
+  try (Connection connection = dataSource.getConnection()) {
+    Statement stmt = connection.createStatement();
+    stmt.executeUpdate("CREATE TABLE IF NOT EXISTS table_timestamp_and_random_string (tick timestamp, random_string varchar(30))");
+    stmt.executeUpdate("INSERT INTO table_timestamp_and_random_string VALUES (now(), '" + userInput + "')");
+  } catch (Exception e) {
+    model.put("message", e.getMessage());
+    return "error";
+  }
+
+  return "redirect:/db";
+}
+
 
   public static String getRandomString() {
     int length = 10;
